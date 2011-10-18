@@ -1,3 +1,4 @@
 log/*.log
 .DS_Store
 *~
+run_meimei.rb
