@@ -158,14 +158,11 @@ module Meimei
               server.write("PASS #{@password}") if @password
               server.write("NICK #{@nick}")
               server.write("USER #{@username} hostname servername :#{@username}")
-              server.autojoin.each do |channel|
-                server.write("JOIN #{channel}")
-              end
             end
           end
 
-          self.autoping()
-          self.check_timer_plugins()
+          autoping()
+          check_timer_plugins()
           
           @current_server = self.select()
 
@@ -173,7 +170,8 @@ module Meimei
             msg = @current_server.read
             
             if msg != nil
-              self.process_message(msg)
+              autojoin_on_recognize(server, msg)
+              process_message(msg)
             end
           end
         end        
@@ -209,6 +207,18 @@ module Meimei
       end
       
       server.write("PRIVMSG #{to} :#{msg}")
+    end
+    
+    def autojoin_on_recognize(server, msg)
+      if msg =~ /^:\S+ MODE #{@nick} :\+r/
+        autojoin(server)
+      end
+    end
+    
+    def autojoin(server)
+      server.autojoin.each do |channel|
+        server.write("JOIN #{channel}")
+      end
     end
     
     # Parses a messages and dispatches as necessary.
