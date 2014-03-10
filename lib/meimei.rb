@@ -1,0 +1,5 @@
+require 'meimei/array_extensions'
+require 'meimei/client'
+require 'meimei/exception_dump'
+require 'meimei/persistent_hash'
+require 'meimei/server'
