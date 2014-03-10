@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "meimei"
-  s.version = "0.3.0"
+  s.version = "0.3.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["r888888888"]
@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
     "lib/meimei/exception_dump.rb",
     "lib/meimei/persistent_hash.rb",
     "lib/meimei/server.rb",
+    "meimei.gemspec",
     "plugins/an2.rb",
     "plugins/ann.rb",
     "plugins/autoping.rb",
