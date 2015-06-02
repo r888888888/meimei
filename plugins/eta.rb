@@ -5,9 +5,9 @@ require 'damerau-levenshtein'
 require 'time_difference'
 
 define_plugin("!eta") do |msg|
-  query = msg
+  query = Regexp.compile(Regexp.escape(msg.downcase.gsub(/[^a-z0-9 ]+/, " ")), Regexp::IGNORECASE)
 
-  if query.strip == ""
+  if msg.strip == ""
     reply "http://www.mahou.org/Showtime"
   else
     Net::HTTP.start("anime.yshi.org", 80) do |http|
@@ -21,10 +21,13 @@ define_plugin("!eta") do |msg|
       json = JSON.parse(resp.body)
       best, score = nil, 1_000
       json.each do |show|
-        d = DamerauLevenshtein.distance(show["title_name"].downcase, query)
-        if d < score
-          best = show
-          score = d
+        title = show["title_name"].downcase.gsub(/[^a-z0-9 ]+/, " ")
+        if title =~ query
+          d = DamerauLevenshtein.distance(show["title_name"].downcase, msg.downcase)
+          if d < score
+            best = show
+            score = d
+          end
         end
       end
 
