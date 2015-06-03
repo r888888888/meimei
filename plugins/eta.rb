@@ -39,6 +39,8 @@ define_plugin("!eta") do |msg|
         distance_s = "#{distance[:days]}d #{distance[:hours]}h #{distance[:minutes]}m"
 
         reply "ETA for #{anime} (ep #{episode}): #{distance_s}"
+      else
+        reply "No matches found"
       end
     end
   end
