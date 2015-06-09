@@ -9,16 +9,15 @@ require "cgi"
 
 define_plugin("!g") do |msg|
   query = msg
+  api_key = "AIzaSyBbqMEONSx_cqrBhk0GXNbzZw_E3bNgNwQ"
 
-  if query.any?
+  if query =~ /\S/
     begin
-      Net::HTTP.start("ajax.googleapis.com", 80) do |http|
-        resp = http.get("/ajax/services/search/web?v=1.0&q=" + URI.escape(query, /./))
+      Net::HTTP.start("www.googleapis.com", 443, :use_ssl => true) do |http|
+        resp = http.get("/customsearch/v1?cx=003806434433967703265:eltrj5arw88&key=#{api_key}&q=" + URI.escape(query, /./))
         json = JSON.parse(resp.body)
-        answers = json["responseData"]["results"].map {|x| "\00311" + CGI.unescapeHTML(x["titleNoFormatting"]) + " \00307" + URI.unescape(x["url"])}
-        answers.each do |answer|
-          reply answer
-        end
+        answer = json["items"][0]
+        reply "#{answer['title']} -> #{answer['link']}"
       end
     rescue Timeout
       reply "timeout"
