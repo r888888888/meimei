@@ -1,39 +1,40 @@
-define_plugin("!weather") do |msg|
+require 'net/http'
+require 'json'
+
+define_plugin("!w") do |msg|
+  api_key = "37f18195cbd147d0"
   query = msg
 
-  if query.any?
-    begin
-      Net::HTTP.start("www.google.com", 80) do |http|
-        resp = http.get("/search?num=1&q=weather+for+" + URI.escape(query, /[^a-zA-Z0-9]/))
-        if resp.body =~ /<table class="ts std">.+?<b>Weather<\/b> for <b>(.+?)<\/b>/m
+  begin
+    Net::HTTP.start("api.wunderground.com", 80) do |http|
+      param = nil
 
-          result = "Weather for " + $1 + ": "
-
-          if resp.body =~ />Current: <b>(.+?)</m
-            result = result + $1 + ", "
-          end
-
-          if resp.body =~ /<div style="font-size:140%"><b>(.+?)<\/b>/m
-            result = result + $1 + ", "
-          end
-
-          if resp.body =~ />(Wind: .+?)</m
-            result = result + $1 + ", "
-          end
-
-          if resp.body =~ />(Humidity: .+?)</m
-            result = result + $1
-          end
-
-          reply result
-        else
-          reply "Google doesn't seem to know"
-        end
+      if msg =~ /^\d+$/
+        param = "#{msg}"
+      elsif msg =~ /,/
+        city, country = msg.split(/,/)
+        param = "#{country.strip}/#{city.strip}".gsub(" ", "_")
+      else
+        param = msg.gsub(" ", "_")
       end
-    rescue Timeout
-      reply "timeout"
-    rescue Exception => e
-      reply e.to_s
+
+      resp = http.get("/api/#{api_key}/conditions/q/#{param}.json")
+      json = JSON.parse(resp.body)
+
+      if json["current_observation"].nil?
+        reply "Unknown location. Usage: !w [us zip code | city, state | city, country]"
+      else
+        location = json["current_observation"]["display_location"]["full"]
+        temperature = json["current_observation"]["temperature_string"]
+        weather = json["current_observation"]["weather"]
+        humidty = json["current_observation"]["relative_humidity"]
+        response = "#{location}: #{temperature} - #{weather} - #{humidty} Humidity"
+        reply response
+      end
     end
+  rescue Timeout
+    reply "timeout"
+  rescue Exception => e
+    reply e.to_s
   end
 end
