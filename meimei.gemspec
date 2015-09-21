@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "meimei"
-  s.version = "0.4.1"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["r888888888"]
-  s.date = "2015-06-02"
+  s.date = "2015-09-21"
   s.description = "If all you need is a simple infobot and don't need a full RFC1459 implementation."
   s.email = "r888888888@gmail.com"
   s.extra_rdoc_files = [
@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
     "plugins/courage.rb",
     "plugins/dan.rb",
     "plugins/dg.rb",
+    "plugins/domo.rb",
     "plugins/dwiki.rb",
     "plugins/eta.rb",
     "plugins/g.rb",
@@ -67,6 +68,7 @@ Gem::Specification.new do |s|
     "plugins/uptime.rb",
     "plugins/wawawa.rb",
     "plugins/weather.rb",
+    "plugins/yeeart.rb",
     "test/helper.rb",
     "test/test_meimei.rb"
   ]
@@ -87,6 +89,7 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<json>, [">= 0"])
       s.add_runtime_dependency(%q<damerau-levenshtein>, [">= 0"])
       s.add_runtime_dependency(%q<time_difference>, [">= 0"])
+      s.add_runtime_dependency(%q<pry>, [">= 0"])
     else
       s.add_dependency(%q<jeweler>, [">= 0"])
       s.add_dependency(%q<rake>, [">= 0"])
@@ -95,6 +98,7 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<json>, [">= 0"])
       s.add_dependency(%q<damerau-levenshtein>, [">= 0"])
       s.add_dependency(%q<time_difference>, [">= 0"])
+      s.add_dependency(%q<pry>, [">= 0"])
     end
   else
     s.add_dependency(%q<jeweler>, [">= 0"])
@@ -104,6 +108,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<json>, [">= 0"])
     s.add_dependency(%q<damerau-levenshtein>, [">= 0"])
     s.add_dependency(%q<time_difference>, [">= 0"])
+    s.add_dependency(%q<pry>, [">= 0"])
   end
 end
 
