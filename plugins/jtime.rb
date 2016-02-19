@@ -1,9 +1,6 @@
-define_plugin("!jtime") do
-  Net::HTTP.start("www.google.com", 80) do |http|
-    resp = http.get("/search?q=tokyo+time")
-    html = resp.body
-    html =~ /<b>(\d+):(\d+)(am|pm)<\/b>/
+require 'timezone'
 
-    reply "It is currently #{$1}:#{$2} #{$3} in Japan."
-  end
+define_plugin("!jtime") do
+  timezone = Timezone::Zone.new(:zone => "Asia/Tokyo")
+  reply "It is currently #{timezone.strftime('%c')} in Tokyo."
 end
