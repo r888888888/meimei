@@ -21,7 +21,10 @@ define_plugin("!w") do |msg|
       resp = http.get("/api/#{api_key}/conditions/q/#{param}.json")
       json = JSON.parse(resp.body)
 
-      if json["current_observation"].nil?
+      if json["response"] && json["response"]["results"]
+        query = "zmw:" + json["response"]["results"][0]["zmw"]
+        reply "Ambiguous location. Try searching #{query}"
+      elsif json["current_observation"].nil?
         reply "Unknown location. Usage: !w [us zip code | city, state | city, country]"
       else
         location = json["current_observation"]["display_location"]["full"]

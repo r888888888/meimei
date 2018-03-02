@@ -22,10 +22,11 @@ define_plugin("!gc") do |msg|
   url = URI.parse("http://api.wolframalpha.com/v2/query?input=#{CGI.escape(msg)}&appid=#{app_id}&format=plaintext&excludepodid=Input&assumption=#{assumption}")
 
   begin
+    answers = []
+    
     Net::HTTP.start(url.host, url.port) do |http|
       resp = http.get(url.request_uri).body
       doc = Nokogiri::XML(resp)
-      answers = []
 
       doc.css("pod[error='false'] plaintext").each do |plaintext|
         answers << plaintext.inner_html.strip
