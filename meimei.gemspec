@@ -65,6 +65,7 @@ Gem::Specification.new do |s|
     "plugins/s.rb",
     "plugins/shiningfinger.rb",
     "plugins/shuffle.rb",
+    "plugins/shrug.rb",
     "plugins/sugei_inaka.rb",
     "plugins/suki_dakara.rb",
     "plugins/ts.rb",
@@ -116,4 +117,3 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<timezone>.freeze, [">= 0"])
   end
 end
-
